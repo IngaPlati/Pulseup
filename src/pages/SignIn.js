@@ -32,7 +32,7 @@ function SignIn() {
       return;
     }
     
-    // Demo sign in - in real app, this would call an API
+    // Demo sign in - 
     console.log('Sign in attempt:', formData);
     setSuccessMessage('Sign in successful! Redirecting...');
     

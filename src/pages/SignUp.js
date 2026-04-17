@@ -78,7 +78,7 @@ function SignUp() {
     console.log('Account created:', formData);
     setSuccessMessage('Account created successfully! Redirecting to sign in...');
     
-    // Redirect to sign in after 2 seconds
+    // Redirect to sign in after seconds
     setTimeout(() => {
       navigate('/signin');
     }, 2000);
