@@ -103,10 +103,10 @@ Due to the high demand for campus clinic services, students require quick, relia
 
 *(Note: Add the specific tech stack here once finalized. E.g., React, Node.js, MongoDB, PostgreSQL, Firebase, etc.)*
 
-- **Frontend:** [TBD]
-- **Backend:** [TBD]
-- **Database:** [TBD]
-- **Tools:** GitHub, Git, etc.
+- **Frontend:** React
+- **Backend:** Java, Node.js
+- **Database:** Supabase/Firebase
+- **Tools:** GitHub, Jira, and Figma.
 
 ---
 
