@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PulseUp | Student Portal – Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- External CSS file: StudentSignUp.css -->
+    <link rel="stylesheet" href="css folder/StudentSignup.css">
+</head>
+<body>
+<div class="su-page">
+
+    <!-- Navigation with Home button -->
+    <nav class="su-nav">
+        <span class="su-nav-logo">PulseUp</span>
+        <a href="index.html" class="su-btn-home" id="homeNavBtn">
+            <i class="fa fa-house"></i> Back to Home
+        </a>
+    </nav>
+
+    <div class="su-wrapper">
+
+        <!-- LEFT PANEL (professional feature panel) -->
+        <div class="su-left">
+            <div class="su-badge">STUDENT PORTAL</div>
+            <h1>Join Your Campus PulseUp.</h1>
+            <p class="su-tagline">Access clinical precision and real-time health services designed exclusively for CPUT students.</p>
+
+            <div class="su-feature">
+                <div class="su-icon green"><i class="fa fa-calendar-check"></i></div>
+                <div>
+                    <h4>Real-time Booking</h4>
+                    <p>Secure your clinic visit in seconds without the physical queue.</p>
+                </div>
+            </div>
+            <div class="su-feature">
+                <div class="su-icon blue"><i class="fa fa-file-medical"></i></div>
+                <div>
+                    <h4>Digital Health Records</h4>
+                    <p>Securely access your medical history and test results.</p>
+                </div>
+            </div>
+            <div class="su-feature">
+                <div class="su-icon teal"><i class="fa fa-heart"></i></div>
+                <div>
+                    <h4>Health Points</h4>
+                    <p>Earn rewards for wellness checkups.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Signup form + success -->
+        <div class="su-right">
+            <div class="su-card" id="suCardContainer">
+
+                <!-- SUCCESS STATE (after successful submission) -->
+                <div id="suSuccessScreen" class="su-success-screen" style="display: none;">
+                    <div class="su-success-icon"><i class="fa fa-circle-check"></i></div>
+                    <h2>Account Created!</h2>
+                    <p>Welcome to PulseUp, your health companion.<br>Redirecting to sign in page...</p>
+                    <div class="su-spinner"></div>
+                </div>
+
+                <!-- FORM STATE (visible by default) -->
+                <div id="suFormContainer">
+                    <h2>Create Account</h2>
+                    <!-- relevant & welcoming heading (no step indicator) -->
+                    <div class="su-welcome-heading">
+                        <i class="fa fa-graduation-cap"></i>  Start your wellness journey
+                    </div>
+                    <p class="su-subtitle">Tell us about yourself to activate your campus health profile.</p>
+
+                    <!-- Global error banner -->
+                    <div id="globalErrBanner" class="su-banner su-banner-err" style="display: none;">
+                        <i class="fa fa-triangle-exclamation"></i>
+                        <span id="globalErrMsg">Please fix the errors below.</span>
+                    </div>
+
+                    <form id="signupStudentForm" novalidate>
+                        <!-- 2 columns row: Full Name + Student Number -->
+                        <div class="su-field-row">
+                            <div class="su-field">
+                                <label for="fullNameStudent">Full Name</label>
+                                <input type="text" id="fullNameStudent" placeholder="e.g. Lindokuhle Nanto" autocomplete="name">
+                                <span class="su-err" id="errFullName"></span>
+                            </div>
+                            <div class="su-field">
+                                <label for="studentNumber">Student Number</label>
+                                <input type="text" id="studentNumber" placeholder="218XXXXXX">
+                                <span class="su-err" id="errStudentNum"></span>
+                            </div>
+                        </div>
+
+                        <!-- Email field -->
+                        <div class="su-field">
+                            <label for="emailStudent">CPUT Email Address</label>
+                            <div class="su-input-wrap">
+                                <input type="email" id="emailStudent" placeholder="student@mycput.ac.za" autocomplete="email">
+                                <i class="fa fa-envelope su-trail"></i>
+                            </div>
+                            <span class="su-err" id="errEmail"></span>
+                        </div>
+
+                        <!-- Password field with eye & hints -->
+                        <div class="su-field">
+                            <label for="passwordStudent">Password</label>
+                            <div class="su-pw-wrap" id="pwWrapper">
+                                <i class="fa fa-lock su-lead"></i>
+                                <input type="password" id="passwordStudent" placeholder="Enter strong password" autocomplete="new-password">
+                                <span class="su-eye" id="togglePwdEye"><i class="fa fa-eye"></i></span>
+                            </div>
+                            <div id="pwdHintsBox" class="su-hints" style="display: none;">
+                                <ul>
+                                    <li id="hintLength"><i class="fa fa-circle-xmark"></i> At least 8 characters</li>
+                                    <li id="hintUpper"><i class="fa fa-circle-xmark"></i> At least one uppercase letter</li>
+                                    <li id="hintNumber"><i class="fa fa-circle-xmark"></i> At least one number</li>
+                                </ul>
+                            </div>
+                            <span class="su-err" id="errPassword"></span>
+                        </div>
+
+                        <!-- Confirm Password field -->
+                        <div class="su-field">
+                            <label for="confirmPasswordStudent">Confirm Password</label>
+                            <div class="su-pw-wrap" id="cpwWrapper">
+                                <i class="fa fa-lock su-lead"></i>
+                                <input type="password" id="confirmPasswordStudent" placeholder="Repeat password">
+                                <span class="su-eye" id="toggleConfirmEye"><i class="fa fa-eye"></i></span>
+                            </div>
+                            <span class="su-err" id="errConfirmPassword"></span>
+                        </div>
+
+                        <!-- Terms & Conditions checkbox -->
+                        <div class="su-check-wrap">
+                            <label class="su-check-label">
+                                <input type="checkbox" id="termsCheckbox">
+                                <span>I agree to the <a href="#" id="policyLink">Privacy Policy</a> and campus health terms.</span>
+                            </label>
+                            <span class="su-err" id="errTerms" style="display: none;"></span>
+                        </div>
+
+                        <button type="submit" class="su-btn">
+                            Create Account <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <p class="su-bottom">
+                        Already have an account? <a href="StudentSignin.html" id="signInRedirectLink">Sign In</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- External JavaScript file: StudentSignUp.js -->
+<script src="js/auth/signup.js"></script>
+</body>
+</html>
