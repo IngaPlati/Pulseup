@@ -54,9 +54,6 @@ function getDashboardPath(role) {
     case 'STUDENT':
       return '/student/dashboard';
 
-    case 'EMPLOYEE':
-      return '/employee/dashboard';
-
     case 'STAFF':
       return '/staff/dashboard';
 

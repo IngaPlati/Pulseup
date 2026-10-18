@@ -1,15 +1,12 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
-import { USE_BACKEND } from '../constants/appConfig';
 import { clearSession, getRolePrefix, getStoredRole } from '../utils/session';
 import './StudentSidebar.css';
 
 function getNavItems(prefix, role) {
   return [
     { to: `${prefix}/dashboard`, icon: '▦', label: 'Dashboard' },
-    ...(USE_BACKEND
-      ? [{ to: `${prefix}/overview`, icon: '◫', label: 'Overview' }]
-      : []),
+    { to: `${prefix}/overview`, icon: '◫', label: 'Overview' },
     { to: `${prefix}/bookings`, icon: '▣', label: 'Bookings' },
     { to: `${prefix}/history`, icon: '◷', label: 'History' },
     // Health quests are for students only, not university staff.

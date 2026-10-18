@@ -1,6 +1,8 @@
-import { USE_BACKEND } from '../constants/appConfig';
 import api from '../api/api';
 import { getStoredRole, getStoredUser } from './session';
+
+// PulseUp is only available at the District Six campus.
+export const CAMPUS = 'District Six Campus';
 
 const DETAILS_KEY_PREFIX = 'pulseupStudentDetails:';
 
@@ -22,7 +24,7 @@ export function getRegistrationDetails() {
     email: user.email || '',
     phone: user.phoneNumber || user.phone || '',
     course: user.course || '',
-    campus: user.campus || '',
+    campus: CAMPUS,
     residence: user.residence || '',
     yearOfStudy: user.yearOfStudy || '',
     emergencyName: user.emergencyContactName || '',
@@ -30,21 +32,13 @@ export function getRegistrationDetails() {
     emergencyPhone: user.emergencyContactPhone || '',
     bloodType: user.bloodType || '',
     allergies: user.allergies || '',
-    employeeNumber: user.employeeNumber || '',
-    jobTitle: user.jobTitle || '',
-    department: user.department || '',
   };
-}
-
-// Students have study details; university employees have work details instead.
-export function isStudentAccount() {
-  return getStoredRole() !== 'EMPLOYEE';
 }
 
 // Loads the saved profile from the backend and keeps it in the stored user,
 // so the profile page and headers show it straight after sign-in.
 export async function fetchStudentProfile() {
-  if (!USE_BACKEND || getStoredRole() !== 'STUDENT') {
+  if (getStoredRole() !== 'STUDENT') {
     return null;
   }
 
@@ -75,7 +69,7 @@ export function getStudentDetails() {
 
 // Sends the fields the backend stores; the rest stay in this browser only.
 export async function saveStudentDetailsToBackend(details) {
-  if (!USE_BACKEND || getStoredRole() !== 'STUDENT') {
+  if (getStoredRole() !== 'STUDENT') {
     return;
   }
 
@@ -88,7 +82,7 @@ export async function saveStudentDetailsToBackend(details) {
     email: details.email,
     phoneNumber: details.phone,
     course: details.course,
-    campus: details.campus,
+    campus: CAMPUS,
     residence: details.residence,
     yearOfStudy: details.yearOfStudy,
     emergencyContactName: details.emergencyName || null,
@@ -100,24 +94,6 @@ export function saveStudentDetails(details) {
   const user = getStoredUser();
 
   localStorage.setItem(getDetailsKey(user), JSON.stringify(details));
-
-  if (user && !USE_BACKEND) {
-    const nameParts = details.fullName.trim().split(/\s+/);
-
-    const lastName = nameParts.length > 1 ? nameParts.pop() : '';
-
-    localStorage.setItem(
-      'pulseupUser',
-      JSON.stringify({
-        ...user,
-        firstName: nameParts.join(' '),
-        lastName,
-        email: details.email,
-        phoneNumber: details.phone,
-        studentNumber: details.studentNumber,
-      }),
-    );
-  }
 
   window.dispatchEvent(new Event(STUDENT_PROFILE_EVENT));
 }

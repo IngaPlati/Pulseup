@@ -155,8 +155,7 @@ function StudentProfile({
                 course:
                     profile.course.trim(),
 
-                campus:
-                    profile.campus.trim(),
+                campus: "District Six Campus",
 
                 residence:
                 profile.residence,
@@ -357,8 +356,8 @@ function StudentProfile({
                     <input
                         type="text"
                         name="campus"
-                        value={profile.campus}
-                        onChange={handleChange}
+                        value="District Six Campus"
+                        readOnly
                         required
                         disabled={saving}
                     />

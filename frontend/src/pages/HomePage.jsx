@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import heroImg from '../assets/hero-students.webp';
 import comfortImg from '../assets/comfort-student.webp';
-import staffImg from '../assets/staff-team.webp';
 import './HomePage.css';
 
 const values = [
@@ -12,12 +11,6 @@ const values = [
   { icon: 'eyeoff', title: 'Discreet', text: 'Private consultations designed to make you feel comfortable and respected.' },
   { icon: 'leaf', title: 'Holistic', text: 'Treating the whole person—mind and body—not just the symptoms.' },
   { icon: 'globe', title: 'Culturally Aware', text: 'Responsive care that respects the diverse backgrounds of our community.' },
-];
-
-const staffServices = [
-  { icon: 'heart', title: 'Reproductive Health', text: 'Access to family planning resources and advice.' },
-  { icon: 'activity', title: 'BP Checkups', text: 'Regular blood pressure monitoring and heart health.' },
-  { icon: 'shield', title: 'VCT Services', text: 'Private and voluntary counseling and testing.' },
 ];
 
 const services = [
@@ -63,34 +56,14 @@ function Icon({ name, size = 22 }) {
   );
 }
 
+// PulseUp is only available at the District Six campus.
 const CAMPUS_CLINICS = [
-  {
-    name: 'Bellville Campus',
-    phone: '+27 21 959 6403',
-    tel: '+27219596403',
-    location: 'New Library Extension, Ground Floor',
-    hours: '08:00 - 16:30',
-  },
   {
     name: 'Cape Town (District Six) Campus',
     phone: '+27 21 460 3405',
     tel: '+27214603405',
     location: 'Administration Building, Level 2, Room 2.900',
     hours: '08:00 - 16:30',
-  },
-  {
-    name: 'Mowbray Campus',
-    phone: '+27 21 680 1555',
-    tel: '+27216801555',
-    location: 'Administration Building, Ground Floor',
-    hours: '08:00 - 16:00',
-  },
-  {
-    name: 'Wellington Campus',
-    phone: '+27 21 864 5522',
-    tel: '+27218645522',
-    location: 'Administration Building, Ground Floor, Room A29',
-    hours: '07:30 - 15:30',
   },
 ];
 
@@ -124,7 +97,7 @@ function Pulsy() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { from: 'bot', text: "Hi, I'm Pulsy, your PulseUp assistant. Are you a student or staff member?", chips: ['Student', 'Staff'] },
+    { from: 'bot', text: "Hi, I'm Pulsy, your PulseUp assistant. What can I help you with?", chips: TOPICS },
   ]);
   const endRef = useRef(null);
 
@@ -138,10 +111,7 @@ function Pulsy() {
     setMessages((m) => [...m.map((x) => ({ ...x, chips: undefined })), { from: 'me', text: value }]);
     setInput('');
     setTimeout(() => {
-      let reply;
-      if (value === 'Student') reply = { text: 'Great! What can I help you with?', chips: TOPICS };
-      else if (value === 'Staff') reply = { text: 'Staff can sign in to publish availability, review requests and manage the queue.', link: { to: '/login', label: 'Staff sign in' } };
-      else reply = { ...pulsyReply(value), chips: TOPICS };
+      const reply = { ...pulsyReply(value), chips: TOPICS };
       setMessages((m) => [...m, { from: 'bot', ...reply }]);
     }, 450);
   }
@@ -426,12 +396,12 @@ function HomePage() {
 
           <div className="home-container bmc-hero-content">
             <h1>
-              Award-winning campus care, for everyone.
+              Award-winning campus care, for every student.
             </h1>
 
             <p>
-              PulseUp brings CPUT's clinical team to every student and staff
-              member on campus, with simple booking, live queues and
+              PulseUp brings CPUT's clinical team to every student on the
+              District Six Campus, with simple booking, live queues and
               confidential support you can trust.
             </p>
 
@@ -454,9 +424,9 @@ function HomePage() {
             <h2>Medical excellence and support beyond compare.</h2>
 
             <p>
-              PulseUp gives the CPUT community award-winning clinical care and
-              wraparound support, from booking through recovery, so every
-              student and staff member can thrive.
+              PulseUp gives District Six Campus students award-winning clinical
+              care and wraparound support, from booking through recovery, so
+              every student can thrive.
             </p>
           </div>
         </section>
@@ -486,47 +456,6 @@ function HomePage() {
                   Book an appointment
                 </Link>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bmc-feature bmc-feature-reverse" id="staff">
-          <div className="home-container bmc-feature-grid">
-            <div className="bmc-feature-copy">
-              <span className="bmc-feature-label">Staff &amp; student care</span>
-
-              <h3>Care for everyone on campus, not just students.</h3>
-
-              <p>
-                Lecturers, cleaners, security guards and every other campus
-                employee can register for their own PulseUp account and use
-                the same clinic, booking and queue tools as students.
-              </p>
-
-              <ul className="bmc-staff-services" aria-label="Services for staff">
-                {staffServices.map((item) => (
-                  <li key={item.title}>
-                    <span><Icon name={item.icon} size={20} /></span>
-                    <div>
-                      <strong>{item.title}</strong>
-                      <small>{item.text}</small>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="bmc-feature-actions">
-                <Link className="bmc-button bmc-button-solid" to="/register/staff">
-                  Register as university staff
-                </Link>
-              </div>
-            </div>
-
-            <div className="bmc-feature-media">
-              <img
-                src={staffImg}
-                alt="The campus staff team standing together on the steps"
-              />
             </div>
           </div>
         </section>
@@ -630,9 +559,9 @@ function HomePage() {
               <div className="home-help-contact">
                 <div className="home-help-contact-head">
                   <span>Contact us</span>
-                  <h2>Reach a campus clinic directly.</h2>
+                  <h2>Reach the District Six clinic directly.</h2>
                   <p>
-                    Campus Health Clinics run at four CPUT campuses. Call ahead
+                    The PulseUp clinic runs at the District Six Campus. Call ahead
                     to check availability, or sign in to book online.
                   </p>
                 </div>
@@ -688,7 +617,7 @@ function HomePage() {
 
             <p>
               Student-focused appointment booking and digital queue information
-              for CPUT campus healthcare.
+              for District Six Campus healthcare.
             </p>
           </div>
 

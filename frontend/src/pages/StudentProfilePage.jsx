@@ -4,10 +4,10 @@ import YEAR_OF_STUDY_OPTIONS from '../constants/yearOfStudyOptions';
 import {
   STUDENT_IMAGE_KEY,
   STUDENT_PROFILE_EVENT,
+  CAMPUS,
   fetchStudentProfile,
   getStudentDetails,
   getStudentInitials,
-  isStudentAccount,
   saveStudentDetails,
   saveStudentDetailsToBackend,
 } from '../utils/studentProfile';
@@ -30,9 +30,6 @@ function StudentProfilePage() {
   const [message, setMessage] = useState({ text: '', type: '' });
 
   const isNewProfile = !savedDetails.fullName;
-
-  // University employees have no study details, so those fields are hidden.
-  const isStudent = isStudentAccount();
 
   // Load what the server already knows as soon as the page opens.
   useEffect(() => {
@@ -196,10 +193,10 @@ function StudentProfilePage() {
             </div>
 
             <div>
-              <h2>{form.fullName || (isStudent ? 'New Student Profile' : 'New Profile')}</h2>
+              <h2>{form.fullName || 'New Student Profile'}</h2>
 
               <span className="sp-badge">
-                {isNewProfile ? 'New User' : isStudent ? 'Active Student' : 'Active Staff'}
+                {isNewProfile ? 'New User' : 'Active Student'}
               </span>
 
               {image && (
@@ -229,31 +226,19 @@ function StudentProfilePage() {
               />
             </label>
 
-            {isStudent ? (
-              <label className="sp-field">
-                Student Number
-                <input
-                  type="text"
-                  name="studentNumber"
-                  placeholder="9-digit student ID"
-                  pattern="\d{9}"
-                  title="Enter your 9-digit student number"
-                  value={form.studentNumber}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-            ) : (
-              <label className="sp-field">
-                Employee Number
-                <input
-                  type="text"
-                  name="employeeNumber"
-                  value={form.employeeNumber}
-                  onChange={handleChange}
-                />
-              </label>
-            )}
+            <label className="sp-field">
+              Student Number
+              <input
+                type="text"
+                name="studentNumber"
+                placeholder="9-digit student ID"
+                pattern="\d{9}"
+                title="Enter your 9-digit student number"
+                value={form.studentNumber}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
             <label className="sp-field">
               Email Address
@@ -280,8 +265,6 @@ function StudentProfilePage() {
             </label>
           </div>
 
-          {isStudent ? (
-            <>
           <h3 className="sp-section-label">Study Details</h3>
 
           <div className="sp-grid">
@@ -318,8 +301,8 @@ function StudentProfilePage() {
               <input
                 type="text"
                 name="campus"
-                value={form.campus}
-                onChange={handleChange}
+                value={CAMPUS}
+                readOnly
               />
             </label>
 
@@ -333,44 +316,6 @@ function StudentProfilePage() {
               />
             </label>
           </div>
-            </>
-          ) : (
-            <>
-          <h3 className="sp-section-label">Work Details</h3>
-
-          <div className="sp-grid">
-            <label className="sp-field">
-              Job Title
-              <input
-                type="text"
-                name="jobTitle"
-                value={form.jobTitle}
-                onChange={handleChange}
-              />
-            </label>
-
-            <label className="sp-field">
-              Department
-              <input
-                type="text"
-                name="department"
-                value={form.department}
-                onChange={handleChange}
-              />
-            </label>
-
-            <label className="sp-field">
-              Campus
-              <input
-                type="text"
-                name="campus"
-                value={form.campus}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-            </>
-          )}
 
           <h3 className="sp-section-label">Emergency Contact</h3>
 

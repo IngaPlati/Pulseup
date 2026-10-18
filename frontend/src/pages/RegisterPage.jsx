@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import api from '../api/api';
-import { USE_BACKEND } from '../constants/appConfig';
 import AuthBackground from '../components/AuthBackground';
 import ResponsiveHeader from '../components/ResponsiveHeader';
 
 import './RegisterPage.css';
+
+// PulseUp is only available at the District Six campus.
+const CAMPUS = 'District Six Campus';
 
 const INITIAL_FORM = {
   firstName: '',
@@ -14,39 +16,10 @@ const INITIAL_FORM = {
   email: '',
   phoneNumber: '',
   studentNumber: '',
-  campus: '',
+  campus: CAMPUS,
   password: '',
   confirmPassword: '',
 };
-
-const INITIAL_EMPLOYEE_FORM = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phoneNumber: '',
-  employeeNumber: '',
-  jobTitle: '',
-  department: '',
-  campus: '',
-  password: '',
-  confirmPassword: '',
-};
-
-const JOB_TITLES = [
-  'Lecturer',
-  'Security guard',
-  'Cleaner',
-  'Administrative staff',
-  'Maintenance worker',
-  'Other',
-];
-
-const CAMPUSES = [
-  'District Six Campus',
-  'Bellville Campus',
-  'Mowbray Campus',
-  'Wellington Campus',
-];
 
 function EyeIcon({ visible }) {
   return (
@@ -97,14 +70,10 @@ function getRegistrationError(error) {
   }
 }
 
-function RegisterPage({ accountType = 'student' }) {
+function RegisterPage() {
   const navigate = useNavigate();
 
-  const isEmployee = accountType === 'employee';
-
-  const [form, setForm] = useState(
-    isEmployee ? INITIAL_EMPLOYEE_FORM : INITIAL_FORM,
-  );
+  const [form, setForm] = useState(INITIAL_FORM);
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -137,11 +106,7 @@ function RegisterPage({ accountType = 'student' }) {
       return 'Enter a valid email address.';
     }
 
-    if (isEmployee) {
-      if (!/^[A-Za-z0-9-]{3,20}$/.test(form.employeeNumber.trim())) {
-        return 'Enter a valid employee number (letters, digits or dashes).';
-      }
-    } else if (!/^\d{8,12}$/.test(form.studentNumber.trim())) {
+    if (!/^\d{8,12}$/.test(form.studentNumber.trim())) {
       return 'The student number must contain 8 to 12 digits.';
     }
 
@@ -174,30 +139,15 @@ function RegisterPage({ accountType = 'student' }) {
     setIsSubmitting(true);
 
     try {
-      const response = await api.post(
-        isEmployee ? '/auth/register/employee' : '/auth/register/student',
-        isEmployee
-          ? {
-              firstName: form.firstName.trim(),
-              lastName: form.lastName.trim(),
-              email: form.email.trim().toLowerCase(),
-              phoneNumber: form.phoneNumber.trim(),
-              employeeNumber: form.employeeNumber.trim(),
-              jobTitle: form.jobTitle,
-              department: form.department.trim(),
-              campus: form.campus,
-              password: form.password,
-            }
-          : {
-              firstName: form.firstName.trim(),
-              lastName: form.lastName.trim(),
-              email: form.email.trim().toLowerCase(),
-              phoneNumber: form.phoneNumber.trim(),
-              studentNumber: form.studentNumber.trim(),
-              campus: form.campus,
-              password: form.password,
-            },
-      );
+      const response = await api.post('/auth/register/student', {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim().toLowerCase(),
+        phoneNumber: form.phoneNumber.trim(),
+        studentNumber: form.studentNumber.trim(),
+        campus: CAMPUS,
+        password: form.password,
+      });
 
       const user = response.data || {};
 
@@ -223,11 +173,11 @@ function RegisterPage({ accountType = 'student' }) {
           JSON.stringify({
             ...user,
             token,
-            role: user.role || (isEmployee ? 'EMPLOYEE' : 'STUDENT'),
+            role: user.role || 'STUDENT',
           }),
         );
 
-        navigate(isEmployee ? '/employee/dashboard' : '/student/dashboard', {
+        navigate('/student/dashboard', {
           replace: true,
         });
 
@@ -256,11 +206,7 @@ function RegisterPage({ accountType = 'student' }) {
 
       <section
         className="pulse-auth-card pulse-register-card"
-        aria-label={
-          isEmployee
-            ? 'PulseUp university staff registration'
-            : 'PulseUp student registration'
-        }
+        aria-label="PulseUp student registration"
       >
         <ResponsiveHeader
           variant="auth"
@@ -272,30 +218,21 @@ function RegisterPage({ accountType = 'student' }) {
             {
               label: 'Create student account',
               to: '/register',
-              active: !isEmployee,
+              active: true,
             },
-            ...(USE_BACKEND
-              ? []
-              : [
-                  {
-                    label: 'Create university staff account',
-                    to: '/register/staff',
-                    active: isEmployee,
-                  },
-                ]),
           ]}
         />
 
         <div className="pulse-register-content">
           <div className="pulse-register-heading">
             <p className="pulse-auth-eyebrow">
-              {isEmployee ? 'UNIVERSITY STAFF REGISTRATION' : 'STUDENT REGISTRATION'}
+              STUDENT REGISTRATION
             </p>
 
             <h1 className="pulse-auth-title">Create your account</h1>
 
             <span className="pulse-auth-lead">
-              Complete your details to get started.
+              Complete your details to get started. PulseUp is available to District Six Campus students.
             </span>
           </div>
 
@@ -355,89 +292,18 @@ function RegisterPage({ accountType = 'student' }) {
               />
             </label>
 
-            {isEmployee ? (
-              <>
-                <label className="pulse-auth-field">
-                  <span>Employee number</span>
-
-                  <input
-                    name="employeeNumber"
-                    value={form.employeeNumber}
-                    onChange={updateField}
-                    placeholder="e.g. EMP-1042"
-                    maxLength={20}
-                    disabled={isSubmitting}
-                    required
-                  />
-                </label>
-
-                <label className="pulse-auth-field">
-                  <span>Job title</span>
-
-                  <select
-                    name="jobTitle"
-                    value={form.jobTitle}
-                    onChange={updateField}
-                    disabled={isSubmitting}
-                    required
-                  >
-                    <option value="">Select job title</option>
-
-                    {JOB_TITLES.map((title) => (
-                      <option value={title} key={title}>
-                        {title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="pulse-auth-field">
-                  <span>Department</span>
-
-                  <input
-                    name="department"
-                    value={form.department}
-                    onChange={updateField}
-                    placeholder="e.g. Security, Facilities"
-                    disabled={isSubmitting}
-                    required
-                  />
-                </label>
-              </>
-            ) : (
-              <label className="pulse-auth-field">
-                <span>Student number</span>
-
-                <input
-                  name="studentNumber"
-                  value={form.studentNumber}
-                  onChange={updateField}
-                  inputMode="numeric"
-                  maxLength={12}
-                  disabled={isSubmitting}
-                  required
-                />
-              </label>
-            )}
-
             <label className="pulse-auth-field">
-              <span>Campus</span>
+              <span>Student number</span>
 
-              <select
-                name="campus"
-                value={form.campus}
+              <input
+                name="studentNumber"
+                value={form.studentNumber}
                 onChange={updateField}
+                inputMode="numeric"
+                maxLength={12}
                 disabled={isSubmitting}
                 required
-              >
-                <option value="">Select campus</option>
-
-                {CAMPUSES.map((campus) => (
-                  <option value={campus} key={campus}>
-                    {campus}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
 
             <label className="pulse-auth-field">
@@ -537,33 +403,9 @@ function RegisterPage({ accountType = 'student' }) {
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting
-                ? 'Creating account...'
-                : isEmployee
-                  ? 'Create staff account'
-                  : 'Create student account'}
+              {isSubmitting ? 'Creating account...' : 'Create student account'}
             </button>
           </form>
-
-          {!USE_BACKEND && (
-            <p className="pulse-register-footer">
-              {isEmployee ? (
-                <>
-                  Are you a student?{' '}
-                  <Link className="pulse-auth-link" to="/register">
-                    Register as a student
-                  </Link>
-                </>
-              ) : (
-                <>
-                  Lecturer, security guard, cleaner or other campus employee?{' '}
-                  <Link className="pulse-auth-link" to="/register/staff">
-                    Register as university staff
-                  </Link>
-                </>
-              )}
-            </p>
-          )}
 
           <p className="pulse-register-footer">
             Already registered?{' '}

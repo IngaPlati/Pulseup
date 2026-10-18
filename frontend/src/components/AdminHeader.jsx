@@ -6,7 +6,7 @@ import {ADMIN_PHOTO_EVENT,ADMIN_PHOTO_KEY,ADMIN_PROFILE_KEY} from './adminProfil
 import './AdminHeader.css';
 
 const pageTitles={
- '/dashboard':['Dashboard','Manage the clinic queue, active appointments and consultation history.'],
+ '/dashboard':['Dashboard','Today’s clinic at a glance: schedule, approvals, staff and reports.'],
  '/profile':['Profile','Staff account and clinic activity.'],
  '/bookings':['Appointments','Manage the clinic queue, active appointments and consultation history.'],
  '/health-quests':['Healthquests','Create and manage student health quests.'],

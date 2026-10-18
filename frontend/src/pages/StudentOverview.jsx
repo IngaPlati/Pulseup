@@ -37,7 +37,7 @@ function Dashboard() {
     });
 
     const [request, setRequest] = useState({
-        hospital: '',
+        hospital: 'District 6 Campus Clinic',
         reason: '',
     });
 
@@ -256,14 +256,8 @@ function Dashboard() {
                             }
                         >
                             <option value="">Select Campus Clinic</option>
-                            <option value="Bellville Campus Clinic">
-                                Bellville Campus Clinic
-                            </option>
                             <option value="District 6 Campus Clinic">
                                 District 6 Campus Clinic
-                            </option>
-                            <option value="Wellington Campus Clinic">
-                                Wellington Campus Clinic
                             </option>
                         </select>
 
