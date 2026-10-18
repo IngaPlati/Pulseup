@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { USE_BACKEND } from '../constants/appConfig';
-import mockAdapter from './mockApi';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
@@ -13,10 +11,6 @@ const api = axios.create({
     Accept: 'application/json',
   },
 });
-
-if (!USE_BACKEND) {
-  api.defaults.adapter = mockAdapter;
-}
 
 function getStoredUser() {
   const storedUser = localStorage.getItem('pulseupUser');

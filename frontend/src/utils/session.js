@@ -44,9 +44,6 @@ export function getRolePrefix(role) {
     case 'STUDENT':
       return '/student';
 
-    case 'EMPLOYEE':
-      return '/employee';
-
     case 'STAFF':
       return '/staff';
 

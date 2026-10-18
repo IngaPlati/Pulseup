@@ -6,7 +6,7 @@ const initialNotes = [];
 
 function SickNotes(){
  const [notes,setNotes]=useState(initialNotes);
- const [form,setForm]=useState({clinic:'',reason:'',from:'',to:''});
+ const [form,setForm]=useState({clinic:'District 6 Campus Clinic',reason:'',from:'',to:''});
  const [notifications,setNotifications]=useState(false);
  const [settingsOpen,setSettingsOpen]=useState(false);
  const [profile,setProfile]=useState({name:getUserDisplayName('Student'),email:'',phone:''});
@@ -23,7 +23,7 @@ function SickNotes(){
   if(!form.clinic.trim()||!form.reason.trim()||!form.from||!form.to){alert('Please complete all fields.');return;}
   if(form.to<form.from){alert('The To date cannot be earlier than the From date.');return;}
   setNotes(n=>[{id:Date.now(),clinic:form.clinic,reason:form.reason,range:`${form.from} - ${form.to}`,status:'Pending',action:'Track'},...n]);
-  setForm({clinic:'',reason:'',from:'',to:''});
+  setForm({clinic:'District 6 Campus Clinic',reason:'',from:'',to:''});
   alert('Sick note request submitted successfully.');
  };
 
@@ -60,14 +60,8 @@ function SickNotes(){
           required
       >
        <option value="">Select Campus Clinic</option>
-       <option value="Bellville Campus Clinic">
-        Bellville Campus Clinic
-       </option>
        <option value="District 6 Campus Clinic">
         District 6 Campus Clinic
-       </option>
-       <option value="Wellington Campus Clinic">
-        Wellington Campus Clinic
        </option>
       </select>
      </label>

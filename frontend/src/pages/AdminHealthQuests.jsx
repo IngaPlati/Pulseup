@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from '../api/api';
-import { USE_BACKEND } from '../constants/appConfig';
 import { getErrorMessage, toArray } from '../utils/appointments';
 import './AdminHealthQuests.css';
 
@@ -10,20 +9,14 @@ const EMPTY_FORM = { title: '', description: '', category: 'Daily', active: true
 
 export default function AdminHealthQuests() {
   const [quests, setQuests] = useState([]);
-  const [loading, setLoading] = useState(USE_BACKEND);
-  const [message, setMessage] = useState(
-    USE_BACKEND ? '' : 'Health quests need the PulseUp backend. Set VITE_USE_BACKEND=true to manage them.',
-  );
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
-    if (!USE_BACKEND) {
-      return;
-    }
-
     try {
       const response = await api.get('/health-quests');
 
@@ -129,7 +122,7 @@ export default function AdminHealthQuests() {
           <h2>Health Quests</h2>
           <p>Create the wellness quests students see on their Health Quests page.</p>
         </div>
-        <button type="button" onClick={openCreate} disabled={!USE_BACKEND}>+ Create Health Quest</button>
+        <button type="button" onClick={openCreate}>+ Create Health Quest</button>
       </div>
 
       <section className="hq-admin-stats">

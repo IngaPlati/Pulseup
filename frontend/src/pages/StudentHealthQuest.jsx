@@ -1,19 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import './StudentHealthQuest.css';
 import api from '../api/api';
-import { USE_BACKEND } from '../constants/appConfig';
 import { getErrorMessage, toArray } from '../utils/appointments';
 
 // Health quests are created by administrators; students can only view them.
 function HealthQuest() {
  const [quests,setQuests]=useState([]);
- const [loading,setLoading]=useState(USE_BACKEND);
- const [message,setMessage]=useState(USE_BACKEND?'':'Health quests need the PulseUp backend. Set VITE_USE_BACKEND=true to see them.');
+ const [loading,setLoading]=useState(true);
+ const [message,setMessage]=useState('');
  const [filter,setFilter]=useState('All');
  const [details,setDetails]=useState(null);
 
  useEffect(()=>{
-  if(!USE_BACKEND)return undefined;
   let cancelled=false;
   api.get('/health-quests')
    .then(response=>{if(!cancelled)setQuests(toArray(response.data));})

@@ -1,6 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
-import { USE_BACKEND } from '../constants/appConfig';
 import { clearSession, getRolePrefix, getStoredRole } from '../utils/session';
 import './AdminSidebar.css';
 
@@ -13,11 +12,10 @@ function AdminSidebar() {
 
   const links = [
     ['Dashboard', `${prefix}/dashboard`, '▦'],
-    ...(role === 'ADMIN' && USE_BACKEND
+    ...(role === 'ADMIN'
       ? [['Create Account', '/admin/create-account', '✚']]
       : []),
     ['Profile', `${prefix}/profile`, '◉'],
-    ...(USE_BACKEND ? [['Bookings', `${prefix}/bookings`, '▣']] : []),
     ...(role === 'ADMIN'
       ? [['Health Quests', `${prefix}/health-quests`, '♡']]
       : []),

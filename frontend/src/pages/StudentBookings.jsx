@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './StudentBookings.css';
 import api from '../api/api';
-import { USE_BACKEND } from '../constants/appConfig';
 import { getUserDisplayName } from '../utils/session';
 import {
     APPOINTMENT_TYPES,
@@ -50,10 +49,8 @@ function getInitials(name) {
 
 function Bookings() {
     const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(USE_BACKEND);
-    const [message, setMessage] = useState(
-        USE_BACKEND ? '' : 'Bookings need the PulseUp backend. Set VITE_USE_BACKEND=true to use them.',
-    );
+    const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState('');
     const [query, setQuery] = useState('');
     const [showAll, setShowAll] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -77,10 +74,6 @@ function Bookings() {
     }, [darkMode]);
 
     const load = useCallback(async () => {
-        if (!USE_BACKEND) {
-            return;
-        }
-
         try {
             setAppointments(await fetchMyAppointments());
         } catch (error) {

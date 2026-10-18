@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import './StudentHistory.css';
-import { USE_BACKEND } from '../constants/appConfig';
 import { getUserDisplayName } from '../utils/session';
 import {
  fetchMyAppointments,
@@ -31,7 +30,6 @@ function History(){
  const [darkMode,setDarkMode]=useState(()=>localStorage.getItem('darkMode')==='enabled');
 
  useEffect(()=>{
-  if(!USE_BACKEND){setLoadError('History needs the PulseUp backend. Set VITE_USE_BACKEND=true to use it.');return;}
   fetchMyAppointments().then(setAppointments).catch(()=>setLoadError('Your history could not be loaded.'));
  },[]);
 

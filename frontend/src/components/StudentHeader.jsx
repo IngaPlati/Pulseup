@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfileAvatar from './ProfileAvatar';
-import { USE_BACKEND } from '../constants/appConfig';
 import { getRolePrefix, getStoredRole } from '../utils/session';
 import { fetchMyAppointments, getReminderNotifications } from '../utils/appointments';
 import { STUDENT_IMAGE_KEY, STUDENT_PROFILE_EVENT, getStudentDetails } from '../utils/studentProfile';
@@ -30,7 +29,7 @@ export default function StudentHeader({searchPlaceholder='Search records...',tit
  const unread=studentNotifications.filter(n=>!readIds.includes(n.id)).length;
 
  useEffect(()=>{
-  if(!USE_BACKEND||getStoredRole()!=='STUDENT')return undefined;
+  if(getStoredRole()!=='STUDENT')return undefined;
   let cancelled=false;
   const load=()=>fetchMyAppointments().then(list=>{if(!cancelled)setStudentNotifications(getReminderNotifications(list).map(n=>({...n,route:'/bookings',icon:'▣'})));}).catch(()=>{});
   load();

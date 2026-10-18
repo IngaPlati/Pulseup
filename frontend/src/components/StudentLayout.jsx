@@ -16,7 +16,7 @@ const pageInfo = {
 
 export default function StudentLayout() {
   const { pathname } = useLocation();
-  const [title, subtitle] = pageInfo[pathname.replace(/^\/(student|employee)/, '')] || ['PulseUp', 'Campus health portal'];
+  const [title, subtitle] = pageInfo[pathname.replace(/^\/student/, '')] || ['PulseUp', 'Campus health portal'];
 
   return (
     <div className="student-layout">
